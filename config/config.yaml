@@ -1,0 +1,224 @@
+subinfo_fields:
+  - name: subject_id
+    type: int
+    constraints:
+      min: 101
+      max: 999
+      digits: 3
+  - name: subname
+    type: string
+  - name: age
+    type: int
+    constraints:
+      min: 5
+      max: 80
+  - name: gender
+    type: choice
+    choices:
+      - Male
+      - Female
+
+subinfo_mapping:
+  subject_id: Subject ID (3 digits)
+  subname: Name
+  age: Age
+  gender: Gender
+  Male: Male
+  Female: Female
+  Participant Information: Participant Information
+  registration_failed: Registration failed
+  registration_successful: Registration successful
+  invalid_input: "{field} is invalid"
+
+window:
+  size: [1280, 720]
+  units: pix
+  screen: 0
+  bg_color: gray
+  fullscreen: true
+  fullscreen_lock_escape: true
+  monitor_width_cm: 35.5
+  monitor_distance_cm: 60
+
+task:
+  task_name: passive_lottery_preview
+  save_path: ./outputs/human
+  total_blocks: 2
+  total_trials: 36
+  trial_per_block: 18
+  conditions: [gain, loss, mixed]
+  key_list: ["space"]
+  seed_mode: same_across_sub
+  overall_seed: 2025
+  initial_score: 0
+  delta: 1
+  language: Chinese
+  voice_name: zh-CN-YunyangNeural
+  voice_enabled: true
+  input_mode: keyboard
+  hide_cursor: true
+  force_quit_enabled: true
+  force_quit_shortcut: ctrl+q
+
+timing:
+  condition_cue_duration: 0.6
+  pre_lottery_fixation_duration: 1.2
+  lottery_reveal_duration: 1.5
+  outcome_feedback_duration: 1.0
+  iti_duration: 0.8
+
+stimuli:
+  fixation:
+    type: text
+    text: "+"
+    color: white
+    height: 48
+    font: SimHei
+
+  instruction_text:
+    type: text
+    text: |
+      被动彩票任务
+
+      你将观看不同类型的彩票结果。
+      每轮无需按键，保持注视并观察结果即可。
+
+      按空格键开始。
+    color: white
+    height: 28
+    wrapWidth: 980
+    font: SimHei
+
+  condition_cue:
+    type: text
+    text: |
+      本轮：{condition_label}
+      请注视中央并等待开始
+    color: white
+    height: 36
+    wrapWidth: 980
+    font: SimHei
+
+  lottery_offer:
+    type: text
+    text: |
+      彩票规则
+      {prob_a}% 概率：{outcome_a} 分
+      {rest_prob}% 概率：{outcome_b} 分
+    color: white
+    height: 34
+    wrapWidth: 980
+    font: SimHei
+
+  outcome_win:
+    type: text
+    text: |
+      本轮结果：{outcome_value} 分
+      当前累计：{total_score} 分
+    color: green
+    height: 40
+    wrapWidth: 980
+    font: SimHei
+
+  outcome_neutral:
+    type: text
+    text: |
+      本轮结果：{outcome_value} 分
+      当前累计：{total_score} 分
+    color: white
+    height: 40
+    wrapWidth: 980
+    font: SimHei
+
+  outcome_loss:
+    type: text
+    text: |
+      本轮结果：{outcome_value} 分
+      当前累计：{total_score} 分
+    color: red
+    height: 40
+    wrapWidth: 980
+    font: SimHei
+
+  block_break:
+    type: text
+    text: |
+      第 {block_num}/{total_blocks} 区块结束
+      本区块中奖率：{win_rate}
+      本区块得分：{block_score}
+      当前累计得分：{total_score}
+
+      按空格键继续
+    color: white
+    height: 28
+    wrapWidth: 980
+    font: SimHei
+
+  good_bye:
+    type: text
+    text: |
+      任务结束
+      最终得分：{total_score}
+
+      按空格键退出
+    color: white
+    height: 30
+    wrapWidth: 980
+    font: SimHei
+
+triggers:
+  map:
+    exp_onset: 1
+    exp_end: 2
+    block_onset: 10
+    block_end: 11
+    gain_condition_cue_onset: 20
+    loss_condition_cue_onset: 21
+    mixed_condition_cue_onset: 22
+    gain_pre_lottery_fixation_onset: 30
+    loss_pre_lottery_fixation_onset: 31
+    mixed_pre_lottery_fixation_onset: 32
+    gain_lottery_reveal_onset: 40
+    loss_lottery_reveal_onset: 41
+    mixed_lottery_reveal_onset: 42
+    gain_win_outcome_feedback_onset: 50
+    gain_neutral_outcome_feedback_onset: 51
+    gain_loss_outcome_feedback_onset: 52
+    loss_win_outcome_feedback_onset: 53
+    loss_neutral_outcome_feedback_onset: 54
+    loss_loss_outcome_feedback_onset: 55
+    mixed_win_outcome_feedback_onset: 56
+    mixed_neutral_outcome_feedback_onset: 57
+    mixed_loss_outcome_feedback_onset: 58
+    iti_onset: 60
+
+  driver:
+    type: serial_url
+    url: loop://
+    baudrate: 115200
+
+  timing:
+    post_delay_ms: 1
+
+  policy:
+    strict: false
+
+condition_generation:
+  seed: 22022
+  enable_logging: true
+  lottery_profiles:
+    gain:
+      label: 增益彩票
+      prob_a: 0.75
+      outcome_a: 10
+      outcome_b: 0
+    loss:
+      label: 损失彩票
+      prob_a: 0.75
+      outcome_a: -10
+      outcome_b: 0
+    mixed:
+      label: 混合彩票
+      prob_a: 0.5
+      outcome_a: 10
+      outcome_b: -10

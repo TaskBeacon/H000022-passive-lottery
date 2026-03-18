@@ -1,0 +1,15 @@
+id: H000022
+slug: passive-lottery
+title: Passive Lottery Task
+acquisition: behavior
+variant: html
+cognitive_domain:
+  - reward-processing
+  - expectancy
+  - passive-observation
+maturity: prototype
+version:
+  release_tag: "0.1.0"
+contracts:
+  psyflow_web_taps: v0.1.0
+maintainer: []
